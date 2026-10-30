@@ -19,22 +19,22 @@ export default function Home() {
       <HomeHeader />
 
       <Container wide>
-        {/* Work carousel first; on desktop the hero text sits beside it. */}
-        <section className="lg:grid lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-10">
-          <div className="lg:col-span-7">
-            <WorkCarousel />
-          </div>
-          <div className="flex flex-col gap-3.5 pt-4 pb-2 md:gap-5 md:pt-8 lg:col-span-5 lg:py-0">
-            <h1 className="font-display text-[34px] leading-[1.08] font-bold tracking-tight md:text-5xl md:leading-[1.05]">
+        {/* Phone: the work carousel comes first, then the hero. Tablet and desktop: hero first, carousel below. */}
+        <section className="flex flex-col">
+          <div className="flex flex-col gap-3.5 pt-4 pb-2 md:items-center md:gap-5 md:pt-14 md:pb-10 md:text-center">
+            <h1 className="font-display text-[34px] leading-[1.08] font-bold tracking-tight md:max-w-3xl md:text-5xl md:leading-[1.05] lg:text-6xl lg:leading-[1.04]">
               Your design, engraved on wood, metal and glass.
             </h1>
             <p className="text-base leading-normal text-muted md:max-w-xl md:text-lg">
               Choose a material, upload your file and see an exact preview before we start engraving.
             </p>
-            <PrimaryLink href="/order/material" className="flex-none md:self-start">
+            <PrimaryLink href="/order/material" className="flex-none md:mt-2">
               Start your order
               <ArrowRightIcon size={20} />
             </PrimaryLink>
+          </div>
+          <div className="order-first md:order-none">
+            <WorkCarousel />
           </div>
         </section>
 

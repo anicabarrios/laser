@@ -27,7 +27,7 @@ export function WorkCarousel() {
   }
 
   return (
-    <div role="region" aria-roledescription="carousel" aria-label="Examples of our work" className="mt-4 flex-none lg:mt-0">
+    <div role="region" aria-roledescription="carousel" aria-label="Examples of our work" className="mt-4 flex-none md:mt-0">
       <div className="relative h-[340px] overflow-hidden rounded-2xl md:h-[440px] lg:h-[500px]">
         <div ref={trackRef} onScroll={onScroll} className="no-scrollbar flex h-full snap-x snap-mandatory overflow-x-auto">
           {WORK.map((work, i) => {
