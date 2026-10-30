@@ -10,12 +10,13 @@ interface Props {
   material: MaterialId;
   product: Product;
   size: Size;
-  design: DesignView;
+  /** null = nothing chosen yet (shows a hint instead of a design). */
+  design: DesignView | null;
   placement: Placement;
   /** Present = the customer can drag and pinch. Absent = read-only preview. */
   onChange?: (patch: Partial<Placement>) => void;
-  /** Stage height in px. */
-  height: number;
+  /** Tailwind classes that give the stage its height, e.g. "h-[300px] lg:h-[460px]". */
+  className: string;
   topLabel?: ReactNode;
   bottomLabel?: ReactNode;
 }
@@ -35,7 +36,7 @@ export function PlacementStage({
   design,
   placement,
   onChange,
-  height,
+  className,
   topLabel,
   bottomLabel,
 }: Props) {
@@ -113,10 +114,14 @@ export function PlacementStage({
   }
 
   const [areaW, areaH] = engravingAreaMm(size.dimsMm);
-  const surfaceWidth = `min(calc(100% - 32px), ${Math.round(height * 0.68 * product.aspect)}px)`;
+  // The stage is a size container, so the face scales with whatever height the classes give it.
+  const surfaceWidth = `min(calc(100cqw - 32px), calc(100cqh * 0.68 * ${product.aspect}))`;
 
   return (
-    <div className="relative flex flex-none items-center justify-center rounded-2xl bg-footer" style={{ height }}>
+    <div
+      className={`relative flex flex-none items-center justify-center rounded-2xl bg-footer ${className}`}
+      style={{ containerType: "size" }}
+    >
       {topLabel === undefined ? (
         <span className="absolute top-3 left-3 text-xs font-medium text-[#e9e4dd]">
           Engraving area: {areaW} × {areaH} mm
@@ -154,8 +159,16 @@ export function PlacementStage({
               color: mat.engraveColor,
             }}
           >
-            <DesignGraphic design={design} />
+            {design ? <DesignGraphic design={design} /> : null}
           </div>
+          {!design && (
+            <span
+              className="absolute inset-0 flex items-center justify-center px-4 text-center text-xs font-medium opacity-70"
+              style={{ color: mat.engraveColor }}
+            >
+              Your design will appear here
+            </span>
+          )}
         </div>
       </div>
 

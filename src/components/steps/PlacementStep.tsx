@@ -10,7 +10,7 @@ import { PrimaryLink } from "../ui";
 import { BottomBar, WizardShell } from "../Wizard";
 
 const secondary =
-  "flex h-12 flex-1 cursor-pointer items-center justify-center rounded-xl border-[1.5px] border-ink bg-transparent text-[15px] font-semibold";
+  "flex h-12 flex-1 cursor-pointer items-center justify-center rounded-xl border-[1.5px] border-ink bg-transparent text-[15px] font-semibold transition hover:bg-ink/10";
 
 export function PlacementStep() {
   const material = useDraft((s) => s.material);
@@ -40,64 +40,67 @@ export function PlacementStep() {
       }
     >
       {material && product && size && design && (
-        <>
-          <PlacementStage
-            material={material}
-            product={product}
-            size={size}
-            design={design}
-            placement={placement}
-            onChange={setPlacement}
-            height={300}
-          />
-
-          <div className="flex items-center gap-2 text-[13px] text-muted">
-            <MoveIcon size={18} />
-            Drag to move, pinch to resize.
+        <div className="flex flex-col gap-3 lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-10">
+          <div className="flex flex-col gap-3">
+            <PlacementStage
+              material={material}
+              product={product}
+              size={size}
+              design={design}
+              placement={placement}
+              onChange={setPlacement}
+              className="h-[300px] md:h-[400px] lg:h-[480px]"
+            />
+            <div className="flex items-center gap-2 text-[13px] text-muted">
+              <MoveIcon size={18} />
+              Drag to move, pinch to resize.
+            </div>
           </div>
 
-          <div className="flex flex-col gap-1 rounded-[14px] border border-line bg-surface px-4 py-3">
-            <label className="flex flex-col text-sm font-semibold">
-              <span className="flex justify-between">
-                <span>Size</span>
-                <span className="font-medium text-muted">{Math.round(placement.scale * 100)}%</span>
-              </span>
-              <input
-                type="range"
-                min={10}
-                max={100}
-                value={Math.round(placement.scale * 100)}
-                aria-label="Design size"
-                onChange={(e) => setPlacement({ scale: Number(e.target.value) / 100 })}
-                className="m-0 h-11 w-full accent-copper"
-              />
-            </label>
-            <label className="flex flex-col text-sm font-semibold">
-              <span className="flex justify-between">
-                <span>Rotation</span>
-                <span className="font-medium text-muted">{placement.rotation}°</span>
-              </span>
-              <input
-                type="range"
-                min={-180}
-                max={180}
-                value={placement.rotation}
-                aria-label="Design rotation"
-                onChange={(e) => setPlacement({ rotation: Number(e.target.value) })}
-                className="m-0 h-11 w-full accent-copper"
-              />
-            </label>
-          </div>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1 rounded-[14px] border border-line bg-surface px-4 py-3">
+              <label className="flex flex-col text-sm font-semibold">
+                <span className="flex justify-between">
+                  <span>Size</span>
+                  <span className="font-medium text-muted">{Math.round(placement.scale * 100)}%</span>
+                </span>
+                <input
+                  type="range"
+                  min={10}
+                  max={100}
+                  value={Math.round(placement.scale * 100)}
+                  aria-label="Design size"
+                  onChange={(e) => setPlacement({ scale: Number(e.target.value) / 100 })}
+                  className="m-0 h-11 w-full accent-copper"
+                />
+              </label>
+              <label className="flex flex-col text-sm font-semibold">
+                <span className="flex justify-between">
+                  <span>Rotation</span>
+                  <span className="font-medium text-muted">{placement.rotation}°</span>
+                </span>
+                <input
+                  type="range"
+                  min={-180}
+                  max={180}
+                  value={placement.rotation}
+                  aria-label="Design rotation"
+                  onChange={(e) => setPlacement({ rotation: Number(e.target.value) })}
+                  className="m-0 h-11 w-full accent-copper"
+                />
+              </label>
+            </div>
 
-          <div className="flex gap-2.5">
-            <button type="button" className={secondary} onClick={() => setPlacement({ x: 0.5, y: 0.5 })}>
-              Center
-            </button>
-            <Link href="/order/design" className={secondary}>
-              Change design
-            </Link>
+            <div className="flex gap-2.5">
+              <button type="button" className={secondary} onClick={() => setPlacement({ x: 0.5, y: 0.5 })}>
+                Center
+              </button>
+              <Link href="/order/design" className={secondary}>
+                Change design
+              </Link>
+            </div>
           </div>
-        </>
+        </div>
       )}
     </WizardShell>
   );

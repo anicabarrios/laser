@@ -9,7 +9,7 @@ import { useHydrated } from "@/lib/use-hydrated";
 import { WizardHeader } from "./Header";
 import { LockIcon } from "./icons";
 import { QuantityStepper } from "./QuantityStepper";
-import { PrimaryButton, PrimaryLink, Swatch } from "./ui";
+import { Container, PrimaryButton, PrimaryLink, Swatch } from "./ui";
 import { BottomBar } from "./Wizard";
 
 function describe(item: CartItem): string[] {
@@ -66,96 +66,116 @@ export function CartView() {
     }
   }
 
+  const hasItems = hydrated && items.length > 0;
+
+  const errorBox = error ? (
+    <p role="alert" className="rounded-xl bg-tint px-3.5 py-3 text-sm">
+      {error}
+    </p>
+  ) : null;
+
   return (
     <>
       <WizardHeader backHref="/" title={hydrated && count > 0 ? `Cart (${count})` : "Cart"} showCart={false} />
 
-      <main className="flex flex-1 flex-col gap-3 px-5 py-4">
-        {hydrated && items.length === 0 && (
-          <div className="mt-10 flex flex-col items-center gap-4 text-center">
-            <h1 className="font-display text-[22px] font-bold">Your cart is empty</h1>
-            <p className="text-[15px] text-muted">Pick a material and add your design to get started.</p>
-            <PrimaryLink href="/order/material" className="w-full flex-none">
-              Start your order
-            </PrimaryLink>
-          </div>
-        )}
+      <Container className="flex flex-1 flex-col py-4 md:py-8">
+        <main className={hasItems ? "lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-12" : ""}>
+          {hydrated && items.length === 0 && (
+            <div className="mx-auto mt-10 flex w-full max-w-md flex-col items-center gap-4 text-center md:mt-16">
+              <h1 className="font-display text-[22px] font-bold md:text-3xl">Your cart is empty</h1>
+              <p className="text-[15px] text-muted md:text-base">Pick a material and add your design to get started.</p>
+              <PrimaryLink href="/order/material" className="w-full flex-none md:w-auto">
+                Start your order
+              </PrimaryLink>
+            </div>
+          )}
 
-        {hydrated &&
-          lines.map(({ item, total }) => {
-            const product = getProduct(item.product);
-            const size = getSize(product, item.size);
-            return (
-              <div key={item.id} className="flex flex-col gap-2 rounded-[14px] border border-line bg-surface p-3">
-                <div className="flex gap-3">
-                  <Swatch material={item.material} className="flex size-[72px] flex-none items-center justify-center rounded-[10px]" />
-                  <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                    <span className="text-[15px] leading-5 font-semibold">
-                      {product.name} · {getMaterial(item.material).name}
-                    </span>
-                    {size && <span className="text-[13px] text-muted">{size.label}</span>}
-                    {describe(item).map((line) => (
-                      <span key={line} className="truncate text-[13px] text-muted">
-                        {line}
-                      </span>
-                    ))}
-                    {item.design.kind === "upload" && !item.design.storagePath && (
-                      <span className="text-[13px] text-copper">File not uploaded yet</span>
-                    )}
+          {hasItems && (
+            <div className="flex flex-col gap-3">
+              <h1 className="hidden font-display text-3xl font-bold tracking-tight md:block">Your cart</h1>
+              {lines.map(({ item, total }) => {
+                const product = getProduct(item.product);
+                const size = getSize(product, item.size);
+                return (
+                  <div key={item.id} className="flex flex-col gap-2 rounded-[14px] border border-line bg-surface p-3 md:p-4">
+                    <div className="flex gap-3 md:gap-4">
+                      <Swatch
+                        material={item.material}
+                        className="flex size-[72px] flex-none items-center justify-center rounded-[10px] md:size-24"
+                      />
+                      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                        <span className="text-[15px] leading-5 font-semibold md:text-lg">
+                          {product.name} · {getMaterial(item.material).name}
+                        </span>
+                        {size && <span className="text-[13px] text-muted md:text-sm">{size.label}</span>}
+                        {describe(item).map((line) => (
+                          <span key={line} className="truncate text-[13px] text-muted md:text-sm">
+                            {line}
+                          </span>
+                        ))}
+                        {item.design.kind === "upload" && !item.design.storagePath && (
+                          <span className="text-[13px] text-copper">File not uploaded yet</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <QuantityStepper value={item.quantity} onChange={(q) => setQuantity(item.id, q)} />
+                      <span className="font-display text-lg font-bold">{formatUSD(total)}</span>
+                      <button
+                        type="button"
+                        onClick={() => remove(item.id)}
+                        className="flex min-h-11 cursor-pointer items-center px-1 text-sm font-semibold text-muted hover:text-ink"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <QuantityStepper value={item.quantity} onChange={(q) => setQuantity(item.id, q)} />
-                  <span className="font-display text-lg font-bold">{formatUSD(total)}</span>
-                  <button
-                    type="button"
-                    onClick={() => remove(item.id)}
-                    className="flex min-h-11 cursor-pointer items-center px-1 text-sm font-semibold text-muted"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-
-        {hydrated && items.length > 0 && (
-          <>
-            <div className="rounded-[14px] border border-line bg-surface px-4 py-1">
-              <div className="flex min-h-11 items-center justify-between border-b border-soft text-sm">
-                <span className="text-muted">Subtotal</span>
-                <span className="font-semibold">{formatUSD(subtotal)}</span>
-              </div>
-              <div className="flex min-h-11 items-center justify-between border-b border-soft text-sm">
-                <span className="text-muted">Shipping</span>
-                <span className="text-muted">Calculated at checkout</span>
-              </div>
-              <div className="flex min-h-12 items-center justify-between text-base font-bold">
-                <span>Total</span>
-                <span className="font-display text-xl">{formatUSD(subtotal)}</span>
-              </div>
+                );
+              })}
+              <Link href="/order/material" className="flex min-h-11 items-center justify-center text-[15px] font-semibold text-copper lg:justify-start">
+                Add another product
+              </Link>
             </div>
+          )}
 
-            <div className="flex items-center gap-2 px-1 text-[13px] leading-snug text-muted">
-              <LockIcon size={18} className="flex-none" />
-              Secure payment through Stripe. Cards, Apple Pay and Google Pay.
-            </div>
+          {hasItems && (
+            <aside className="mt-3 flex flex-col gap-3 lg:sticky lg:top-8 lg:mt-0">
+              <div className="rounded-[14px] border border-line bg-surface px-4 py-1">
+                <h2 className="hidden pt-3 pb-1 font-display text-lg font-bold lg:block">Order summary</h2>
+                <div className="flex min-h-11 items-center justify-between border-b border-soft text-sm">
+                  <span className="text-muted">Subtotal</span>
+                  <span className="font-semibold">{formatUSD(subtotal)}</span>
+                </div>
+                <div className="flex min-h-11 items-center justify-between border-b border-soft text-sm">
+                  <span className="text-muted">Shipping</span>
+                  <span className="text-muted">Calculated at checkout</span>
+                </div>
+                <div className="flex min-h-12 items-center justify-between text-base font-bold">
+                  <span>Total</span>
+                  <span className="font-display text-xl">{formatUSD(subtotal)}</span>
+                </div>
+              </div>
 
-            {error && (
-              <p role="alert" className="rounded-xl bg-tint px-3.5 py-3 text-sm">
-                {error}
-              </p>
-            )}
+              <div className="flex items-center gap-2 px-1 text-[13px] leading-snug text-muted">
+                <LockIcon size={18} className="flex-none" />
+                Secure payment through Stripe. Cards, Apple Pay and Google Pay.
+              </div>
 
-            <Link href="/order/material" className="flex min-h-11 items-center justify-center text-[15px] font-semibold text-copper">
-              Add another product
-            </Link>
-          </>
-        )}
-      </main>
+              {errorBox}
 
-      {hydrated && items.length > 0 && (
+              <div className="hidden lg:block">
+                <PrimaryButton disabled={busy} onClick={pay} className="w-full">
+                  {busy ? "Opening checkout…" : "Pay"}
+                </PrimaryButton>
+              </div>
+            </aside>
+          )}
+        </main>
+      </Container>
+
+      {hasItems && (
         <BottomBar
+          className="lg:hidden"
           amount={formatUSD(subtotal)}
           action={
             <PrimaryButton disabled={busy} onClick={pay}>

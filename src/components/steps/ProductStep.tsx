@@ -45,7 +45,7 @@ export function ProductStep() {
       }
     >
       {material && (
-        <div className="flex items-center gap-2.5 rounded-xl border border-line bg-surface py-1.5 pr-1 pl-3">
+        <div className="flex items-center gap-2.5 rounded-xl border border-line bg-surface py-1.5 pr-1 pl-3 md:max-w-sm">
           <Swatch material={material} className="size-8 flex-none rounded-lg" />
           <span className="flex-1 text-[15px] font-semibold">{getMaterial(material).name}</span>
           <Link href="/order/material" className="flex min-h-11 items-center px-3 text-sm font-semibold text-copper">
@@ -55,7 +55,7 @@ export function ProductStep() {
       )}
 
       <h1 className="mt-1 font-display text-[22px] font-bold tracking-tight">Product</h1>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         {material &&
           products.map((p) => {
             const selected = p.id === productId;
@@ -69,7 +69,7 @@ export function ProductStep() {
                   selected ? "border-copper bg-tint" : "border-line bg-surface"
                 }`}
               >
-                <Swatch material={material} className="h-[110px] rounded-lg" />
+                <Swatch material={material} className="h-[110px] rounded-lg md:h-36" />
                 <span className="text-[15px] leading-5 font-semibold">{p.name}</span>
                 <span className="text-[13px] leading-4 text-muted">from {formatUSD(productFromCents(p, material))}</span>
               </button>
@@ -81,7 +81,7 @@ export function ProductStep() {
         <>
           <h2 className="mt-2 font-display text-[22px] font-bold tracking-tight">Size</h2>
           {product.sizes.length > 1 ? (
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2 md:max-w-xl md:gap-3">
               {product.sizes.map((s) => {
                 const selected = s.id === sizeId;
                 return (

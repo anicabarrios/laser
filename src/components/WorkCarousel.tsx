@@ -27,8 +27,8 @@ export function WorkCarousel() {
   }
 
   return (
-    <div role="region" aria-roledescription="carousel" aria-label="Examples of our work" className="mx-5 mt-4 flex-none">
-      <div className="relative h-[340px] overflow-hidden rounded-2xl">
+    <div role="region" aria-roledescription="carousel" aria-label="Examples of our work" className="mt-4 flex-none lg:mt-0">
+      <div className="relative h-[340px] overflow-hidden rounded-2xl md:h-[440px] lg:h-[500px]">
         <div ref={trackRef} onScroll={onScroll} className="no-scrollbar flex h-full snap-x snap-mandatory overflow-x-auto">
           {WORK.map((work, i) => {
             const material = getMaterial(work.material);
@@ -51,8 +51,7 @@ export function WorkCarousel() {
                   />
                 ) : (
                   <svg
-                    width="180"
-                    height="180"
+                    className="size-44 md:size-64"
                     viewBox="0 0 160 160"
                     fill="none"
                     stroke={material.engraveColor}
@@ -74,7 +73,7 @@ export function WorkCarousel() {
                     </text>
                   </svg>
                 )}
-                <span className="absolute bottom-3 left-3 rounded-full bg-ground px-3 py-1.5 text-[13px] font-medium">
+                <span className="absolute bottom-3 left-3 rounded-full bg-ground px-3 py-1.5 text-[13px] font-medium md:bottom-4 md:left-4 md:px-4 md:py-2 md:text-sm">
                   {work.title}
                 </span>
               </div>

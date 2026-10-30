@@ -104,29 +104,32 @@ export function ReviewStep() {
       }
     >
       {material && product && size && design && (
-        <>
-          <PlacementStage
-            material={material}
-            product={product}
-            size={size}
-            design={design}
-            placement={placement}
-            height={190}
-            topLabel={null}
-            bottomLabel={
-              <span className="absolute bottom-2.5 left-2.5 rounded-full bg-ground px-2.5 py-1 text-xs font-medium">
-                Engraving preview
-              </span>
-            }
-          />
+        <div className="flex flex-col gap-3 lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:items-start lg:gap-12">
+          <div className="flex flex-col gap-3">
+            <PlacementStage
+              material={material}
+              product={product}
+              size={size}
+              design={design}
+              placement={placement}
+              className="h-[190px] md:h-[300px] lg:h-[360px]"
+              topLabel={
+                <span className="absolute top-2.5 left-2.5 rounded-full bg-ground px-2.5 py-1 text-xs font-medium">
+                  Engraving preview
+                </span>
+              }
+              bottomLabel={null}
+            />
 
-          <div className={`${card} px-4 py-1`}>
-            <Row label="Material" value={getMaterial(material).name} divider />
-            <Row label="Product" value={`${product.name} · ${size.label}`} divider />
-            <Row label="Dimensions" value={formatDims(size.dimsMm)} divider />
-            <Row label="Design" value={designLabel} />
+            <div className={`${card} px-4 py-1`}>
+              <Row label="Material" value={getMaterial(material).name} divider />
+              <Row label="Product" value={`${product.name} · ${size.label}`} divider />
+              <Row label="Dimensions" value={formatDims(size.dimsMm)} divider />
+              <Row label="Design" value={designLabel} />
+            </div>
           </div>
 
+          <div className="flex flex-col gap-3">
           <div className={`${card} flex items-center justify-between py-1 pr-1 pl-4`}>
             <span className="text-[15px] font-semibold">Quantity</span>
             <QuantityStepper value={quantity} onChange={setQuantity} />
@@ -167,7 +170,8 @@ export function ReviewStep() {
               {error}
             </p>
           )}
-        </>
+          </div>
+        </div>
       )}
     </WizardShell>
   );

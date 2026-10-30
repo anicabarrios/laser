@@ -1,6 +1,6 @@
 # Laser engraving shop
 
-A mobile-first web shop for laser-engraved products (wood, metal, glass). Customers pick a material and a product, upload their own design (or type text, or choose a ready-made motif), place it on a live preview, add it to the cart and pay online. The home page opens with a swipeable showcase of previous work.
+A mobile-first, fully responsive (phone, tablet and desktop) web shop for laser-engraved products (wood, metal, glass). Customers pick a material and a product, upload their own design (or type text, or choose a ready-made motif), place it on a live preview, add it to the cart and pay online. The home page opens with a swipeable showcase of previous work.
 
 ## The order flow
 

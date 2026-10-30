@@ -21,16 +21,16 @@ export default function Page() {
         <span className="font-display text-xl font-bold tracking-tight">{site.name}</span>
       </header>
 
-      <main className="flex flex-1 flex-col items-center gap-3 px-5 pt-10 pb-4">
+      <main className="mx-auto flex w-full max-w-xl flex-1 flex-col items-center gap-3 px-5 pt-10 pb-4 md:pt-16">
         <div className="flex size-[72px] items-center justify-center rounded-full bg-copper text-ground">
           <CheckIcon size={36} />
         </div>
-        <h1 className="mt-2 text-center font-display text-[28px] leading-[1.15] font-bold tracking-tight">
+        <h1 className="mt-2 text-center font-display text-[28px] leading-[1.15] font-bold tracking-tight md:text-4xl">
           Thank you for your order!
         </h1>
-        <p className="text-center text-[15px] leading-normal text-muted">We sent a confirmation to your email.</p>
+        <p className="text-center text-[15px] leading-normal text-muted md:text-base">We sent a confirmation to your email.</p>
 
-        <section className="mt-4 flex w-full flex-col gap-3.5 rounded-2xl border border-line bg-surface p-4">
+        <section className="mt-4 flex w-full flex-col gap-3.5 rounded-2xl border border-line bg-surface p-4 md:p-6">
           <h2 className="font-display text-lg font-bold">What happens next</h2>
           {NEXT_STEPS.map((text, i) => (
             <div key={text} className="flex items-start gap-3">
@@ -43,7 +43,7 @@ export default function Page() {
         </section>
       </main>
 
-      <div className="sticky bottom-0 flex flex-none flex-col gap-1 border-t border-line bg-surface px-5 pt-3 pb-[max(20px,env(safe-area-inset-bottom))]">
+      <div className="sticky bottom-0 flex flex-none flex-col gap-1 border-t border-line bg-surface px-5 pt-3 pb-[max(20px,env(safe-area-inset-bottom))] md:static md:mx-auto md:mb-12 md:w-full md:max-w-xl md:items-center md:border-0 md:bg-transparent md:pt-2">
         <PrimaryLink href="/" className="flex-none">
           Back to home
         </PrimaryLink>

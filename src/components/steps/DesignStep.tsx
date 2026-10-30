@@ -1,12 +1,13 @@
 "use client";
 
 import { useRef, useState, type DragEvent } from "react";
-import { FONTS, MOTIFS, formatUSD, unitPriceCents } from "@/lib/catalog";
+import { FONTS, MOTIFS, formatUSD, getProduct, getSize, unitPriceCents } from "@/lib/catalog";
 import { ALIGN_IDS } from "@/lib/ids";
 import { useDesignView, useDraft, type DesignSource } from "@/lib/store";
 import { useGuard } from "@/lib/use-guard";
 import { ACCEPT_ATTR, MAX_UPLOAD_BYTES, mimeFromFileName } from "@/lib/uploads";
 import { CheckIcon, CloseIcon, MotifIcon, UploadIcon } from "../icons";
+import { PlacementStage } from "../PlacementStage";
 import { PrimaryLink } from "../ui";
 import { BottomBar, WizardShell } from "../Wizard";
 
@@ -29,6 +30,7 @@ export function DesignStep() {
   const font = useDraft((s) => s.font);
   const align = useDraft((s) => s.align);
   const motif = useDraft((s) => s.motif);
+  const placement = useDraft((s) => s.placement);
   const { setSource, setUpload, setText, setFont, setAlign, setMotif } = useDraft.getState();
   const design = useDesignView();
 
@@ -40,6 +42,8 @@ export function DesignStep() {
   useGuard(ready, material ? "/order/product" : "/order/material");
 
   const price = material && productId && sizeId ? unitPriceCents(material, productId, sizeId) : null;
+  const product = productId ? getProduct(productId) : null;
+  const size = product && sizeId ? getSize(product, sizeId) : undefined;
 
   function handleFile(file: File | undefined) {
     setError(null);
@@ -69,6 +73,21 @@ export function DesignStep() {
       step={3}
       label="Design"
       backHref="/order/product"
+      aside={
+        material && product && size ? (
+          <div className="flex flex-col gap-2">
+            <span className="text-sm font-semibold text-muted">Live preview</span>
+            <PlacementStage
+              material={material}
+              product={product}
+              size={size}
+              design={design}
+              placement={placement}
+              className="h-[400px]"
+            />
+          </div>
+        ) : null
+      }
       bottom={
         <BottomBar
           amount={price !== null ? formatUSD(price) : "–"}

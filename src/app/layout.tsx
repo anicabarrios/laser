@@ -22,9 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full">
-        <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col bg-ground sm:border-x sm:border-line">
-          {children}
-        </div>
+        <div className="flex min-h-dvh flex-col">{children}</div>
       </body>
     </html>
   );
