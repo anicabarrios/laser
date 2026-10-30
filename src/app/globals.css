@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+/* Dark + copper palette (from the approved mockup) */
+@theme {
+  --color-ground: #121416;
+  --color-surface: #1d2023;
+  --color-footer: #0c0e10;
+  --color-ink: #f3eee8;
+  --color-muted: #a9a39b;
+  --color-copper: #d98b4f;
+  --color-tint: #3a2a1d;
+  --color-line: #2e3236;
+  --color-soft: #262a2d;
+  --color-seg: #34393d;
+  --color-edge: #7a766f;
+
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --font-display: "Space Grotesk Variable", "Inter Variable", system-ui, sans-serif;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-ground);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Material swatches (stand-ins until real photos are added) */
+.swatch-wood {
+  background: repeating-linear-gradient(94deg, #b98a5b 0 7px, #c69a6b 7px 12px, #ae8054 12px 18px);
+}
+.swatch-metal {
+  background: linear-gradient(135deg, #c9cdd2 0%, #8f969d 42%, #d8dbdf 58%, #9aa1a8 100%);
+}
+.swatch-glass {
+  background: linear-gradient(135deg, #e3f1f2 0%, #bbdadd 50%, #eaf6f6 100%);
+}
+
+/* Hide the scrollbar on the swipe carousel */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}
